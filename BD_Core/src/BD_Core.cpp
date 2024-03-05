@@ -1,11 +1,15 @@
-#include "stdio.h"
+//#include "stdio.h"
+#include <iostream>
 #include "BD_Core.hpp"
 //#ifdef __cplusplus
 //extern "C" {
 //#endif
 
+using namespace std;
+
 int BD_Core_teste(){
-    printf("BD CORE Inicializada\n");
+
+    cout << __func__ << " -> BD CORE Inicializada" << endl;
 
     return 0;
 }
