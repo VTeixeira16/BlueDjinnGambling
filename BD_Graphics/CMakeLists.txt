@@ -1,7 +1,16 @@
 set(LIB_NAME BD_Graph)
 
-add_library(${LIB_NAME} src/BD_Graphics.cpp ${CMAKE_CURRENT_SOURCE_DIR}/deps/glad/src/glad.c)
-target_include_directories(${LIB_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc)
+set(BD_GRAPHICS_SRC_DIR     ${CMAKE_CURRENT_SOURCE_DIR}/src)
+set(BD_GRAPHICS_INC_DIR     ${CMAKE_CURRENT_SOURCE_DIR}/inc)
+set(BD_GRAPHICS_SHADERS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/shaders)
+
+file(GLOB BD_GRAPHICS_SOURCES ${BD_GRAPHICS_SRC_DIR}/*.c ${BD_GRAPHICS_SRC_DIR}/*.cpp)
+file(GLOB BD_GRAPHICS_HEADERS ${BD_GRAPHICS_INC_DIR}/*.h ${BD_GRAPHICS_INC_DIR}/*.hpp)
+file(GLOB BD_GRAPHICS_SHADERS ${BD_GRAPHICS_SHADERS_DIR}/*.glsl ${BD_GRAPHICS_SHADERS_DIR}/*.vs ${BD_GRAPHICS_SHADERS_DIR}/*.fs)
+
+
+add_library(${LIB_NAME} ${BD_GRAPHICS_SOURCES} ${BD_GRAPHICS_HEADERS} ${BD_GRAPHICS_SHADERS} ${CMAKE_CURRENT_SOURCE_DIR}/deps/glad/src/glad.c)
+target_include_directories(${LIB_NAME} PUBLIC ${BD_GRAPHICS_INC_DIR})
 
 if(WIN32)
     target_include_directories(${LIB_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/deps/glm
@@ -21,7 +30,12 @@ if(WIN32)
 
     add_custom_command(TARGET ${LIB_NAME} POST_BUILD
                     COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_SOURCE_DIR}/deps/glew/bin/Release/x64/glew32.dll" "${CMAKE_BINARY_DIR}/glew32.dll"
+#                    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/shaders" "${CMAKE_BINARY_DIR}/shaders"
+#                    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/res" "${CMAKE_BINARY_DIR}/res"
+                    COMMAND ${CMAKE_COMMAND} -E create_symlink "${CMAKE_CURRENT_SOURCE_DIR}/shaders" "${CMAKE_BINARY_DIR}/shaders"
+                    COMMAND ${CMAKE_COMMAND} -E create_symlink "${CMAKE_CURRENT_SOURCE_DIR}/resources" "${CMAKE_BINARY_DIR}/resources"
     )
+
 else()
     find_package(glfw3 REQUIRED)
     find_package(GLEW REQUIRED)
