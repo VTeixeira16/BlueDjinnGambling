@@ -38,13 +38,10 @@ using namespace std;
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 
-int teste(){
-    cout << "BD GRAPHICS Inicializada" << endl;
-    return 0;
-}
-
-int BD_Graphics_Teste()
+int BD_Graphics_Init()
 {
+    cout << "BD GRAPHICS Inicializada" << endl;
+
     // glfw: initialize and configure
         // ------------------------------
         glfwInit();

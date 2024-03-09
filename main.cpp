@@ -12,7 +12,7 @@ int main(){
 
     BD_Core_teste();
 //    BD_Core_curl_get(BD_curlRequisition.url);
-    BD_Graphics_Teste();
+    BD_Graphics_Init();
 
     return 0;
 }
