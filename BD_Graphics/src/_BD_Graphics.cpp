@@ -1,138 +1,19 @@
+//Includes OpenGL
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
+#include <iostream>
+#include <cmath>
+#include <vector>
+/*
+#include "shader_m.h"
 #include "BD_Graphics.hpp"
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 using namespace std;
-
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void processInput(GLFWwindow *window);
-
-//Avaliar possibilidade de mudar para classe BD_Graphics
-
-BlueDjinn::BlueDjinn(unsigned int width, unsigned int height)
-    : ScreenWidth(width), ScreenHeight(height)
-{
-
-}
-
-BlueDjinn::~BlueDjinn(){
-    //TODO - Destructor
-}
-
-int BlueDjinn::Init()
-{
-
-    cout << "BD GRAPHICS Inicializada" << endl;
-
-    // glfw: initialize and configure
-    // ------------------------------
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    #ifdef __APPLE__
-        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    #endif
-
-//////////////////////////////
-    std::cout << __FUNCTION__ << " " << __LINE__ << std::endl;
-    BlueDjinn::CreateWindow(ScreenWidth, ScreenHeight);
-    std::cout << __FUNCTION__ << " " << __LINE__ << std::endl;
-
-}
-
-int BlueDjinn::CreateWindow(int screenWidth, int screenHeight){
-    // glfw window creation
-    // --------------------
-    window = glfwCreateWindow(screenWidth, screenHeight, "LearnOpenGL", NULL, NULL);
-    if (window == NULL)
-    {
-        std::cout << "Failed to create GLFW window" << std::endl;
-        glfwTerminate();
-        return -1;
-    }
-    glfwMakeContextCurrent(window);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-
-    // glad: load all OpenGL function pointers
-    // ---------------------------------------
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
-        std::cout << "Failed to initialize GLAD" << std::endl;
-        return -1;
-    }
-
-    return 0;
-}
-
-int BlueDjinn::Render()
-{
-//    //Executado apenas caso windown não seja null
-//    if(window == NULL){
-//        std::cout << "Failed to render. GLFW window is not open" << std::endl;
-//        return BD_GLFW_WINDOW_NOT_OPEN;
-//    }
-
-//    while (!glfwWindowShouldClose(window)){
-//        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-//        glClear(GL_COLOR_BUFFER_BIT);
-
-//    }
-//    //Desenha o fundo
-//    //Verifica se janela fechou para encerrar o render
-//    return 0;
-
-    // input
-    // -----
-//    while (!glfwWindowShouldClose(window))
-//    {
-        // input
-        // -----
-        isActive = glfwWindowShouldClose(window);
-
-        processInput(window);
-
-        // render
-        // ------
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-        // -------------------------------------------------------------------------------
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-
-//    }
-
-    // glfw: terminate, clearing all previously allocated GLFW resources.
-    // ------------------------------------------------------------------
-//    glfwTerminate();
-    return 0;
-}
-
-//Uso com linguagem C (utilizado apenas se houver migração para classe
-//extern "C" {
-//    int BD_Graphics_CreateWindow(){
-//        //TODO - Implementar e testar uso com projeto feito em C posteriormente
-//        return 0;
-//    }
-//}
-
-
-
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
-    glViewport(0, 0, width, height);
-}
-
-void processInput(GLFWwindow *window)
-{
-
-    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
-}
-
-/*
 
 extern ResourceManager resourceManager;
 
@@ -154,9 +35,12 @@ extern ResourceManager resourceManager;
 
 //const char *fragmentShaderSource =
 
+void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void processInput(GLFWwindow *window);
 std::vector<GLuint> textures(0);
 
 
+static GLFWwindow* window;
 
 int BD_Graphics_GenerateTexture(const char* textureFile){ //TODO - textureFile vai ser substituido pela texture já carregada do ResourceManager
 
@@ -378,6 +262,51 @@ int BD_Graphics_ShowOpenGLVersion(){
     return 0;
 }
 
+
+int BD_Graphics_Init(int screenWidth, int screenHeight)
+{
+
+    cout << "BD GRAPHICS Inicializada" << endl;
+
+    // glfw: initialize and configure
+        // ------------------------------
+        glfwInit();
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+    #ifdef __APPLE__
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    #endif
+
+//////////////////////////////
+        BD_Graphics_CreateWindow(screenWidth, screenHeight);
+}
+
+int BD_Graphics_CreateWindow(int screenWidth, int screenHeight){
+    // glfw window creation
+    // --------------------
+    window = glfwCreateWindow(screenWidth, screenHeight, "LearnOpenGL", NULL, NULL);
+    if (window == NULL)
+    {
+        std::cout << "Failed to create GLFW window" << std::endl;
+        glfwTerminate();
+        return -1;
+    }
+    glfwMakeContextCurrent(window);
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+
+    // glad: load all OpenGL function pointers
+    // ---------------------------------------
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        std::cout << "Failed to initialize GLAD" << std::endl;
+        return -1;
+    }
+
+    return 0;
+}
+
 //TODO - Alem deste trecho migrar para uma classe
 int BD_Graphics_Render2D(){
 
@@ -567,4 +496,15 @@ int BD_Graphics_Render2D(){
 
 }
 
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+    glViewport(0, 0, width, height);
+}
+
+void processInput(GLFWwindow *window)
+{
+
+    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
+}
 */
