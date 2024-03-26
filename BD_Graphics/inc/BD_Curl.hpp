@@ -11,10 +11,8 @@ typedef struct{
     std::string url;
 }BD_CURL_ST;
 
-
-
-
 int BD_Core_curl_get(std::string url);
+int verificarAPI(const char *endpoint); //Trocar nome e otimizar função
 
 //#ifdef __cplusplus
 //}

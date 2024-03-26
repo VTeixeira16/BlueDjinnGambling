@@ -2,8 +2,9 @@
 #define BD_GRAPHICS_HPP
 
 #include "BD_ResourceManager.hpp"
+#include "BD_SpriteRenderer.hpp"
 #include "BD_CodeErrors.hpp"
-//#include "BD_Textures.hpp"
+#include "BD_Game.hpp"
 
 //Includes OpenGL
 
@@ -13,7 +14,6 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
-#include "shader_m.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -35,14 +35,4 @@ private:
 
 };
 
-
-
-/*
-int BD_Graphics_Render2D();
-
-int BD_Graphics_BindTexture();
-int BD_Graphics_GenerateTexture(const char* textureFile);
-
-
-*/
 #endif // BD_GRAPHICS_HPP

@@ -1,5 +1,5 @@
 #include "BD_Graphics.hpp"
-#include "BD_Core.hpp"
+#include "BD_Curl.hpp"
 
 #include <iostream>
 #include "texture.h"
@@ -7,33 +7,27 @@
 
 BlueDjinn blueDjinn(800,600);
 
+
 int main(){
 
-    BD_CURL_ST BD_curlRequisition;
-
-    BD_curlRequisition.url = "https://openai.com";
-
-//    BD_Core_teste();
-//    BD_Core_curl_get(BD_curlRequisition.url);
     std::cout << __FUNCTION__ << " " << __LINE__ << std::endl;
 
-//    Texture2D texture;
-
+//    verificarAPI("https://localhost:7013/api/LoginData/1");
+//    verificarAPI("https://localhost:7013/api/LoginData/2");
+//    verificarAPI("https://localhost:7013/api/LoginData/3");
 
     blueDjinn.Init();
-//    BD_Graphics_BindTexture();
-    ResourceManager::LoadTexture("resources/textures/awesomeface.png", true, "awesomeface");
-//    std::cout << "Carregou primeira textura" << std::endl;
-//    ResourceManager::LoadTexture("resources/textures/container.jpg", true, "container");
-//    BD_Graphics_GenerateTexture("resources/textures/awesomeface.png");
-//    BD_Graphics_GenerateTexture("resources/textures/container.jpg");
 
-//    BD_Graphics_Render2D();
+    //Terá uma função na main para carregar as imagens
+    std::cout << __FUNCTION__ << " " << __LINE__ << std::endl;
 
-//    blueDjinn.Render();
+
+    std::cout << __FUNCTION__ << " " << __LINE__ << std::endl;
+
 
     while (!blueDjinn.isActive){
         blueDjinn.Render();
+//        game.Render();
     }
     glfwTerminate();
     std::cout << "Final do programa" << std::endl;
