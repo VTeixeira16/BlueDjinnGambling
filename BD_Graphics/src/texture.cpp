@@ -13,11 +13,8 @@
 
 Texture2D::Texture2D()
     : Width(0), Height(0), Internal_Format(GL_RGB), Image_Format(GL_RGB), Wrap_S(GL_REPEAT), Wrap_T(GL_REPEAT), Filter_Min(GL_LINEAR), Filter_Max(GL_LINEAR)
-{    std::cout << __FUNCTION__ << std::endl;
-//    unsigned int idTeste;
-//    glGenTextures(1, &idTeste);
-
-//    glGenTextures(1, &this->ID);
+{
+    glGenTextures(1, &this->ID);
 }
 
 void Texture2D::Generate(unsigned int width, unsigned int height, unsigned char* data)

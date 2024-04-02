@@ -3,7 +3,7 @@
 
 using namespace std;
 
-Game game(800,600);
+SpriteRenderer  *Renderer;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -32,6 +32,7 @@ int BlueDjinn::Init()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
+
     #ifdef __APPLE__
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     #endif
@@ -41,7 +42,8 @@ int BlueDjinn::Init()
     BlueDjinn::CreateWindow(ScreenWidth, ScreenHeight);
     std::cout << __FUNCTION__ << " " << __LINE__ << std::endl;
 
-    game.Init();
+    projection = glm::ortho(0.0f, static_cast<float>(ScreenWidth),
+        static_cast<float>(ScreenHeight), 0.0f, -1.0f, 1.0f);
 
     return 0;
 }
@@ -70,7 +72,51 @@ int BlueDjinn::CreateWindow(int screenWidth, int screenHeight){
     return 0;
 }
 
-int BlueDjinn::Render()
+int BlueDjinn::LoadAndGetShader(const char *vShaderFile, const char *fShaderFile, const char *gShaderFile, std::string name){
+
+    LoadShader(vShaderFile, fShaderFile, gShaderFile, name);
+    GetShader(name);
+
+    return 0;
+}
+
+int BlueDjinn::LoadShader(const char *vShaderFile, const char *fShaderFile, const char *gShaderFile, std::string name){
+
+    ResourceManager::LoadShader(vShaderFile, fShaderFile, gShaderFile, name);
+
+    return 0;
+}
+
+int BlueDjinn::GetShader(std::string name){
+
+    ResourceManager::GetShader(name).Use().SetInteger("image", 0);
+    ResourceManager::GetShader(name).SetMatrix4("projection", projection);
+    // set render-specific controls
+    Shader myShader;
+    myShader = ResourceManager::GetShader("sprite");
+    Renderer = new SpriteRenderer(myShader);
+
+    return 0;
+}
+
+int BlueDjinn::LoadTexture(string file, bool alpha, string textureName){
+
+    ResourceManager::LoadTexture(file, alpha, textureName);
+
+    return 0;
+}
+
+int BlueDjinn::DrawTexture(std::string textureName, glm::vec2 position, glm::vec2 size, float rotate, glm::vec3 color){
+
+    Texture2D myTexture;
+    myTexture = ResourceManager::GetTexture(textureName);
+    Renderer->DrawSprite(myTexture, position, size, rotate, color);
+}
+
+
+
+
+int BlueDjinn::InitRender()
 {
     // input
     // -----
@@ -83,10 +129,15 @@ int BlueDjinn::Render()
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    game.Render();
 
     // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
     // -------------------------------------------------------------------------------
+
+
+    return 0;
+}
+
+int BlueDjinn::EndRender(){
     glfwSwapBuffers(window);
     glfwPollEvents();
 

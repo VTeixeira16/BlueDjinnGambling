@@ -5,7 +5,7 @@
 #include "texture.h"
 //    ResourceManager resourceManager;
 
-BlueDjinn blueDjinn(800,600);
+BlueDjinn blueDjinn(1920,1080);
 
 
 int main(){
@@ -18,6 +18,19 @@ int main(){
 
     blueDjinn.Init();
 
+    blueDjinn.LoadAndGetShader("shaders/defaultVS.glsl", "shaders/defaultFS.glsl", nullptr, "sprite");
+    blueDjinn.LoadTexture("resources/textures/awesomeface.png", true, "sprite");
+    blueDjinn.LoadTexture("resources/textures/impacta.png", true, "impacta");
+
+//    blueDjinn.GetShader("sprite");
+//    blueDjinn.LoadTexture("resources/textures/awesomeface.png", true, "sprite", "sprite");
+
+//    blueDjinn.GetShader("impacta");
+//    blueDjinn.LoadTexture("resources/textures/impacta.png", true, "impacta", "impacta");
+
+//    blueDjinn.GetShader("sprite");
+
+
     //Terá uma função na main para carregar as imagens
     std::cout << __FUNCTION__ << " " << __LINE__ << std::endl;
 
@@ -26,8 +39,14 @@ int main(){
 
 
     while (!blueDjinn.isActive){
-        blueDjinn.Render();
-//        game.Render();
+        blueDjinn.InitRender();
+
+        blueDjinn.DrawTexture("sprite", glm::vec2(200, 200), glm::vec2(300, 400), 45.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+
+        blueDjinn.DrawTexture("impacta", glm::vec2(0, 0), glm::vec2(300, 400), 0.0f, glm::vec3(0.5f, 0.5f, 0.5f));
+
+
+        blueDjinn.EndRender();
     }
     glfwTerminate();
     std::cout << "Final do programa" << std::endl;

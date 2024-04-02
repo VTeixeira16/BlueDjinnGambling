@@ -4,7 +4,6 @@
 #include "BD_ResourceManager.hpp"
 #include "BD_SpriteRenderer.hpp"
 #include "BD_CodeErrors.hpp"
-#include "BD_Game.hpp"
 
 //Includes OpenGL
 
@@ -14,6 +13,7 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
+#include <unordered_map>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -27,10 +27,19 @@ public:
     GLFWwindow* window;
 
     int Init();
-    int Render();
+    int InitRender();
+    int EndRender();
+    int LoadAndGetShader(const char *vShaderFile, const char *fShaderFile, const char *gShaderFile, std::string name);
+    int LoadShader(const char *vShaderFile, const char *fShaderFile, const char *gShaderFile, std::string name);
+    int GetShader(std::string name);
+    int LoadTexture(std::string file, bool alpha, std::string textureName);
+    int DrawTexture(std::string textureName, glm::vec2 position, glm::vec2 size, float rotate, glm::vec3 color);
     BlueDjinn(unsigned int width, unsigned int height);
     ~BlueDjinn(); //destructor
 private:
+    std::unordered_map<std::string, SpriteRenderer*> spriteRenderers;
+    glm::mat4 projection;
+    SpriteRenderer  *Renderer;
     CreateWindow(int screenWidth, int screenHeight);
 
 };
