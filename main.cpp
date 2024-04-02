@@ -8,6 +8,11 @@
 BlueDjinn blueDjinn(1920,1080);
 
 
+void BlueDjinn_GraphicCore_Render(){
+//    cout << "Renderizando" << endl;
+    std::cout << __FUNCTION__ << " " << __LINE__ << std::endl;
+}
+
 int main(){
 
     std::cout << __FUNCTION__ << " " << __LINE__ << std::endl;
@@ -21,15 +26,7 @@ int main(){
     blueDjinn.LoadAndGetShader("shaders/defaultVS.glsl", "shaders/defaultFS.glsl", nullptr, "sprite");
     blueDjinn.LoadTexture("resources/textures/awesomeface.png", true, "sprite");
     blueDjinn.LoadTexture("resources/textures/impacta.png", true, "impacta");
-
-//    blueDjinn.GetShader("sprite");
-//    blueDjinn.LoadTexture("resources/textures/awesomeface.png", true, "sprite", "sprite");
-
-//    blueDjinn.GetShader("impacta");
-//    blueDjinn.LoadTexture("resources/textures/impacta.png", true, "impacta", "impacta");
-
-//    blueDjinn.GetShader("sprite");
-
+    blueDjinn.LoadTexture("resources/textures/container.jpg", false, "container");
 
     //Terá uma função na main para carregar as imagens
     std::cout << __FUNCTION__ << " " << __LINE__ << std::endl;
@@ -38,12 +35,24 @@ int main(){
     std::cout << __FUNCTION__ << " " << __LINE__ << std::endl;
 
 
+
     while (!blueDjinn.isActive){
+
         blueDjinn.InitRender();
 
-        blueDjinn.DrawTexture("sprite", glm::vec2(200, 200), glm::vec2(300, 400), 45.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+        blueDjinn.DrawTexture("container", glm::vec2(800, 800), glm::vec2(400, 220), 0.0f, glm::vec3(1.0f, 1.0f, 1.0f));
 
-        blueDjinn.DrawTexture("impacta", glm::vec2(0, 0), glm::vec2(300, 400), 0.0f, glm::vec3(0.5f, 0.5f, 0.5f));
+        if(blueDjinn.GetKeyInput(GLFW_KEY_A)){
+            blueDjinn.DrawTexture("sprite", glm::vec2(200, 200), glm::vec2(300, 400), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+        }
+        if(blueDjinn.GetKeyInput(GLFW_KEY_S)){
+            blueDjinn.DrawTexture("impacta", glm::vec2(0, 0), glm::vec2(400, 125), 0.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+        }
+        if(blueDjinn.GetKeyInput(GLFW_KEY_D)){
+            blueDjinn.DrawTexture("container", glm::vec2(405, 0), glm::vec2(400, 220), 0.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+        }
+
+
 
 
         blueDjinn.EndRender();

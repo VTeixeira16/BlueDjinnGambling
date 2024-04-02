@@ -5,10 +5,12 @@ using namespace std;
 
 SpriteRenderer  *Renderer;
 
+//GLFW Callbacks
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void processInput(GLFWwindow *window);
+//void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
+static void static_key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 
-//Avaliar possibilidade de mudar para classe BD_Graphics
+
 
 BlueDjinn::BlueDjinn(unsigned int width, unsigned int height)
     : ScreenWidth(width), ScreenHeight(height)
@@ -18,6 +20,7 @@ BlueDjinn::BlueDjinn(unsigned int width, unsigned int height)
 
 BlueDjinn::~BlueDjinn(){
     //TODO - Destructor
+    delete Renderer;
 }
 
 int BlueDjinn::Init()
@@ -59,6 +62,12 @@ int BlueDjinn::CreateWindow(int screenWidth, int screenHeight){
         return -1;
     }
     glfwMakeContextCurrent(window);
+
+
+    glfwSetWindowUserPointer(window, this); //Avaliar necessidade
+    glfwSetKeyCallback(window, static_key_callback);
+
+
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     // glad: load all OpenGL function pointers
@@ -122,8 +131,6 @@ int BlueDjinn::InitRender()
     // -----
     isActive = glfwWindowShouldClose(window);
 
-    processInput(window);
-
     // render
     // ------
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -144,15 +151,59 @@ int BlueDjinn::EndRender(){
     return 0;
 }
 
+int BlueDjinn::ProcessInput(int key){
+
+//    if (this->Keys[key] == true)
+//    {
+//        std::cout << "Key " << key << "foi pressionada." << std::endl;
+
+//    }
+
+    return 0;
+}
+
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
 }
 
-void processInput(GLFWwindow *window)
-{
+bool BlueDjinn::GetKeyInput(int key){
 
-    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
+    int ret = false;
+
+    if (this->Keys[key] == true)
+    {
+        std::cout << "Key " << key << "foi pressionada." << std::endl;
+        return true;
+    }
+
+    return ret;
 }
+
+static void static_key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
+    BlueDjinn* instance = static_cast<BlueDjinn*>(glfwGetWindowUserPointer(window));
+    if (instance) {
+        instance->key_callback(window, key, scancode, action, mode);
+    }
+}
+
+void BlueDjinn::key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
+{
+    // when a user presses the escape key, we set the WindowShouldClose property to true, closing the application
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
+    if (key >= 0 && key < 1024)
+    {
+        std::cout << "Key:[" << key << std::endl;
+    }
+
+    if (action == GLFW_PRESS)
+        Keys[key] = true;
+    else if (action == GLFW_RELEASE)
+    {
+        BlueDjinn::Keys[key] = false;
+        BlueDjinn::KeysProcessed[key] = false;
+    }
+}
+
