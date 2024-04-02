@@ -42,16 +42,20 @@ int main(){
 
         blueDjinn.DrawTexture("container", glm::vec2(800, 800), glm::vec2(400, 220), 0.0f, glm::vec3(1.0f, 1.0f, 1.0f));
 
-        if(blueDjinn.GetKeyInput(GLFW_KEY_A)){
-            blueDjinn.DrawTexture("sprite", glm::vec2(200, 200), glm::vec2(300, 400), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-        }
-        if(blueDjinn.GetKeyInput(GLFW_KEY_S)){
-            blueDjinn.DrawTexture("impacta", glm::vec2(0, 0), glm::vec2(400, 125), 0.0f, glm::vec3(1.0f, 1.0f, 1.0f));
-        }
-        if(blueDjinn.GetKeyInput(GLFW_KEY_D)){
-            blueDjinn.DrawTexture("container", glm::vec2(405, 0), glm::vec2(400, 220), 0.0f, glm::vec3(1.0f, 1.0f, 1.0f));
-        }
+////        if(blueDjinn.GetKeyInput(GLFW_KEY_A)){
+//            blueDjinn.DrawTexture("sprite", glm::vec2(200, 200), glm::vec2(300, 400), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+////        }
+////        if(blueDjinn.GetKeyInput(GLFW_KEY_S)){
+//            blueDjinn.DrawTexture("impacta", glm::vec2(0, 0), glm::vec2(400, 125), 0.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+////        }
+////        if(blueDjinn.GetKeyInput(GLFW_KEY_D)){
+//            blueDjinn.DrawSimpleTexture("container", 405, 0);
+////        }
 
+
+        blueDjinn.DrawSimpleTexture("container", 800, 800);
+        blueDjinn.DrawSimpleTexture("sprite", 200, 200);
+        blueDjinn.DrawSimpleTexture("impacta", 0, 0);
 
 
 

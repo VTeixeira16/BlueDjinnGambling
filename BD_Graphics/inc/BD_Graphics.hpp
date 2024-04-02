@@ -38,6 +38,7 @@ public:
     int GetShader(std::string name);
     int LoadTexture(std::string file, bool alpha, std::string textureName);
     int DrawTexture(std::string textureName, glm::vec2 position, glm::vec2 size, float rotate, glm::vec3 color);
+    int DrawSimpleTexture(std::string textureName, int x, int y);
     BlueDjinn(unsigned int width, unsigned int height);
     ~BlueDjinn(); //destructor
     void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);

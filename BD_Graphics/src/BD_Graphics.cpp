@@ -102,7 +102,7 @@ int BlueDjinn::GetShader(std::string name){
     ResourceManager::GetShader(name).SetMatrix4("projection", projection);
     // set render-specific controls
     Shader myShader;
-    myShader = ResourceManager::GetShader("sprite");
+    myShader = ResourceManager::GetShader(name);
     Renderer = new SpriteRenderer(myShader);
 
     return 0;
@@ -122,6 +122,12 @@ int BlueDjinn::DrawTexture(std::string textureName, glm::vec2 position, glm::vec
     Renderer->DrawSprite(myTexture, position, size, rotate, color);
 }
 
+int BlueDjinn::DrawSimpleTexture(std::string textureName, int x, int y){
+    Texture2D myTexture;
+    myTexture = ResourceManager::GetTexture(textureName);
+    glm::vec2 size = glm::vec2(myTexture.Width, myTexture.Height);
+    Renderer->DrawSprite(myTexture, glm::vec2(x,y), size, 0.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+}
 
 
 
