@@ -58,13 +58,6 @@ int BlueDjinn::Init()
         static_cast<float>(ScreenHeight), 0.0f, -1.0f, 1.0f);
 
 
-    std::cout << __FUNCTION__ << " " << __LINE__ << std::endl;
-
-    Text = new TextRenderer(ScreenWidth, ScreenHeight);
-    Text->Load("resources/fonts/OCRAEXT.ttf", 24);
-    std::cout << __FUNCTION__ << " " << __LINE__ << std::endl;
-
-
     return 0;
 }
 
@@ -132,7 +125,8 @@ int BlueDjinn::GetShader(std::string name, std::string type){
 
     if(type == "text"){
         //TODO - Avaliar usar o newTextRenderer
-        myShader.Use();
+//        myShader.Use();
+        Text = new TextRenderer(myShader);
     }else{
         Renderer = new SpriteRenderer(myShader);
     }
@@ -145,6 +139,17 @@ int BlueDjinn::LoadTexture(string file, bool alpha, string textureName){
     ResourceManager::LoadTexture(file, alpha, textureName);
 
     return 0;
+}
+
+int BlueDjinn::LoadText2D(string file, int size, string fontName){
+
+    Font2D teste = ResourceManager::LoadFont(file, size, fontName);
+
+    std::cout << "Function: " << __FUNCTION__ << " - Line: " << __LINE__ << " ID:[" << teste.ID << "] Size:[" << teste.size << "]." << std::endl;
+
+
+//    Text = new TextRenderer(ScreenWidth, ScreenHeight);
+//    Text->Load(file, size);
 }
 
 int BlueDjinn::DrawTexture(std::string textureName, glm::vec2 position, glm::vec2 size, float rotate, glm::vec3 color){
@@ -165,9 +170,14 @@ int BlueDjinn::DrawSimpleTexture(std::string textureName, int x, int y){
     return 0;
 }
 
-int BlueDjinn::DrawText2D(){
+int BlueDjinn::DrawText2D(std::string fontName, std::string text, float x, float y, float scale, glm::vec3 color){
+    Font2D myFont;
+    myFont = ResourceManager::GetFont(fontName);
 
-    Text->RenderText("Press ENTER to start", 650.0f, ScreenHeight / 2.0f, 1.0f);
+//    std::cout << "Size:[" << myFont.size << "]" <<std::endl;
+//    std::cout << "Function: " << __FUNCTION__ << " - Line: " << __LINE__ << " ID:[" << myFont.ID << "] Size:[" << myFont.size << "]." << std::endl;
+
+    Text->RenderText(myFont, text, x, y, scale, color);
 
     return 0;
 }

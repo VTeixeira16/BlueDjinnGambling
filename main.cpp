@@ -23,6 +23,11 @@ int main(){
     blueDjinn.LoadTexture("resources/textures/impacta.png", true, "impacta");
     blueDjinn.LoadTexture("resources/textures/container.jpg", false, "container");
 
+    blueDjinn.LoadText2D("resources/fonts/OCRAEXT.ttf", 64, "fontA_64");
+
+    blueDjinn.LoadText2D("resources/fonts/Antonio-Bold.ttf", 32, "fontA_32");
+
+
     //Terá uma função na main para carregar as imagens
     std::cout << __FUNCTION__ << " " << __LINE__ << std::endl;
 
@@ -53,7 +58,12 @@ int main(){
 
 //        std::cout << "ID DO SHADER " << shader.ID << std::endl;
 
-        blueDjinn.DrawText2D();
+//        std::string fontName, std::string text, float x, float y, float scale, glm::vec3 color
+
+        blueDjinn.DrawText2D("fontA_64", "FonteA", 0, 0, 1.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+        blueDjinn.DrawText2D("fontA_32", "FonteB", 200, 400, 1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+        blueDjinn.DrawText2D("naoExiste", "FonteC", 0, 400, 1.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+
 
 
 

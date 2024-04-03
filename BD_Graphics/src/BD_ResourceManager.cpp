@@ -8,6 +8,7 @@
 //static std::map<std::string, Texture2D> Textures;
 std::map<std::string, Texture2D> ResourceManager::Textures;
 std::map<std::string, Shader>    ResourceManager::Shaders;
+std::map<std::string, Font2D>    ResourceManager::Fonts;
 
 Shader ResourceManager::LoadShader(const char *vShaderFile, const char *fShaderFile, const char *gShaderFile, std::string name)
 {
@@ -22,26 +23,26 @@ Shader& ResourceManager::GetShader(std::string name)
 
 Texture2D ResourceManager::LoadTexture(std::string file, bool alpha, std::string name){
     //TODO - Caso nome já exista, retornará um erro
-    std::cout << "file:" << file << std::endl;
-    std::cout << "alpha:" << alpha << std::endl;
-    std::cout << "file:" << name << std::endl;
-
     Textures[name] = loadTextureFromFile(file, alpha);
-//    loadTextureFromFile();
-
-    std::cout << "Lista de Textures:" << ResourceManager::Textures.size() << std::endl;
-
-
-
-
     return Textures[name];
 }
 
-Texture2D ResourceManager::GetTexture(std::string name)
-{
+Texture2D ResourceManager::GetTexture(std::string name){
     //TODO - Criar situacao de erro
     return Textures[name];
 }
+
+Font2D ResourceManager::LoadFont(std::string file, unsigned int size, std::string name){
+    Fonts[name] = loadFontFromFile(file, size);
+    return Fonts[name];
+
+}
+
+Font2D ResourceManager::GetFont(std::string name){
+    return Fonts[name];
+}
+
+
 
 Shader ResourceManager::loadShaderFromFile(const char *vShaderFile, const char *fShaderFile, const char *gShaderFile)
 {
@@ -115,3 +116,14 @@ Texture2D ResourceManager::loadTextureFromFile(std::string file, bool alpha){
     return texture;
 }
 
+Font2D ResourceManager::loadFontFromFile(std::string file, unsigned int size){
+    Font2D font;
+
+//    std::cout << "file:[" << file << "] Size:[" << size << "]." << std::endl;
+
+//    std::cout << "ID:[" << font.ID << "] Size:[" << font.size << "]." << std::endl;
+
+    font.Generate(file, size);
+
+    return font;
+}

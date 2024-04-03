@@ -38,9 +38,10 @@ public:
     int LoadShader(const char *vShaderFile, const char *fShaderFile, const char *gShaderFile, std::string name);
     int GetShader(std::string name, std::string type);
     int LoadTexture(std::string file, bool alpha, std::string textureName);
+    int LoadText2D(std::string file, int size, std::string fontName);
     int DrawTexture(std::string textureName, glm::vec2 position, glm::vec2 size, float rotate, glm::vec3 color);
     int DrawSimpleTexture(std::string textureName, int x, int y);
-    int DrawText2D();
+    int DrawText2D(std::string fontName, std::string text, float x, float y, float scale, glm::vec3 color);
     BlueDjinn(unsigned int width, unsigned int height);
     ~BlueDjinn(); //destructor
     void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
