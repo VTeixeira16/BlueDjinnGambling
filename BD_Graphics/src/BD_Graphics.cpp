@@ -4,6 +4,7 @@
 using namespace std;
 
 SpriteRenderer  *Renderer;
+TextRenderer    *Text;
 
 //GLFW Callbacks
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -21,6 +22,7 @@ BlueDjinn::BlueDjinn(unsigned int width, unsigned int height)
 BlueDjinn::~BlueDjinn(){
     //TODO - Destructor
     delete Renderer;
+    delete Text;
 }
 
 int BlueDjinn::Init()
@@ -43,10 +45,25 @@ int BlueDjinn::Init()
 //////////////////////////////
     std::cout << __FUNCTION__ << " " << __LINE__ << std::endl;
     BlueDjinn::CreateWindow(ScreenWidth, ScreenHeight);
+
+    // OpenGL state
+    // ------------
+    glEnable(GL_CULL_FACE);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     std::cout << __FUNCTION__ << " " << __LINE__ << std::endl;
 
     projection = glm::ortho(0.0f, static_cast<float>(ScreenWidth),
         static_cast<float>(ScreenHeight), 0.0f, -1.0f, 1.0f);
+
+
+    std::cout << __FUNCTION__ << " " << __LINE__ << std::endl;
+
+    Text = new TextRenderer(ScreenWidth, ScreenHeight);
+    Text->Load("resources/fonts/OCRAEXT.ttf", 24);
+    std::cout << __FUNCTION__ << " " << __LINE__ << std::endl;
+
 
     return 0;
 }
@@ -81,10 +98,10 @@ int BlueDjinn::CreateWindow(int screenWidth, int screenHeight){
     return 0;
 }
 
-int BlueDjinn::LoadAndGetShader(const char *vShaderFile, const char *fShaderFile, const char *gShaderFile, std::string name){
+int BlueDjinn::LoadAndGetShader(const char *vShaderFile, const char *fShaderFile, const char *gShaderFile, std::string name, std::string type){
 
     LoadShader(vShaderFile, fShaderFile, gShaderFile, name);
-    GetShader(name);
+    GetShader(name, type);
 
     return 0;
 }
@@ -96,14 +113,29 @@ int BlueDjinn::LoadShader(const char *vShaderFile, const char *fShaderFile, cons
     return 0;
 }
 
-int BlueDjinn::GetShader(std::string name){
+int BlueDjinn::GetShader(std::string name, std::string type){
 
-    ResourceManager::GetShader(name).Use().SetInteger("image", 0);
+    if(type == "text"){
+        ResourceManager::GetShader(name).Use().SetInteger("text", 0);
+    }else{
+        ResourceManager::GetShader(name).Use().SetInteger("image", 0);
+    }
+
     ResourceManager::GetShader(name).SetMatrix4("projection", projection);
     // set render-specific controls
     Shader myShader;
+
+    //TODO - filtrar se for sprite ou imagem
+    //TODO - Estrutura atual está com o último shader sendo usado para criar um novo render sempre que esse trecho é chamado.
+
     myShader = ResourceManager::GetShader(name);
-    Renderer = new SpriteRenderer(myShader);
+
+    if(type == "text"){
+        //TODO - Avaliar usar o newTextRenderer
+        myShader.Use();
+    }else{
+        Renderer = new SpriteRenderer(myShader);
+    }
 
     return 0;
 }
@@ -120,6 +152,8 @@ int BlueDjinn::DrawTexture(std::string textureName, glm::vec2 position, glm::vec
     Texture2D myTexture;
     myTexture = ResourceManager::GetTexture(textureName);
     Renderer->DrawSprite(myTexture, position, size, rotate, color);
+
+    return 0;
 }
 
 int BlueDjinn::DrawSimpleTexture(std::string textureName, int x, int y){
@@ -127,6 +161,15 @@ int BlueDjinn::DrawSimpleTexture(std::string textureName, int x, int y){
     myTexture = ResourceManager::GetTexture(textureName);
     glm::vec2 size = glm::vec2(myTexture.Width, myTexture.Height);
     Renderer->DrawSprite(myTexture, glm::vec2(x,y), size, 0.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+
+    return 0;
+}
+
+int BlueDjinn::DrawText2D(){
+
+    Text->RenderText("Press ENTER to start", 650.0f, ScreenHeight / 2.0f, 1.0f);
+
+    return 0;
 }
 
 

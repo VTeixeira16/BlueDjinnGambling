@@ -3,6 +3,7 @@
 
 #include "BD_ResourceManager.hpp"
 #include "BD_SpriteRenderer.hpp"
+#include "BD_TextRenderer.hpp"
 #include "BD_CodeErrors.hpp"
 
 //Includes OpenGL
@@ -33,12 +34,13 @@ public:
     int EndRender();
     bool GetKeyInput(int key);
     int ProcessInput(int key);
-    int LoadAndGetShader(const char *vShaderFile, const char *fShaderFile, const char *gShaderFile, std::string name);
+    int LoadAndGetShader(const char *vShaderFile, const char *fShaderFile, const char *gShaderFile, std::string name, std::string type);
     int LoadShader(const char *vShaderFile, const char *fShaderFile, const char *gShaderFile, std::string name);
-    int GetShader(std::string name);
+    int GetShader(std::string name, std::string type);
     int LoadTexture(std::string file, bool alpha, std::string textureName);
     int DrawTexture(std::string textureName, glm::vec2 position, glm::vec2 size, float rotate, glm::vec3 color);
     int DrawSimpleTexture(std::string textureName, int x, int y);
+    int DrawText2D();
     BlueDjinn(unsigned int width, unsigned int height);
     ~BlueDjinn(); //destructor
     void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
@@ -46,6 +48,7 @@ private:
     std::unordered_map<std::string, SpriteRenderer*> spriteRenderers;
     glm::mat4 projection;
     SpriteRenderer  *Renderer;
+    TextRenderer    *Text;
     int CreateWindow(int screenWidth, int screenHeight);
 
 };

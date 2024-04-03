@@ -5,9 +5,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "texture.h"
-#include "BD_shader.h"
-
+#include "BD_Texture.hpp"
+#include "BD_Shader.hpp"
+#include <iostream>
 
 class SpriteRenderer
 {

@@ -54,6 +54,9 @@ void SpriteRenderer::DrawSprite(Texture2D &texture, glm::vec2 position,
 {
     // prepare transformations
     this->shader.Use();
+
+    std::cout << "ID DO SHADER " << this->shader.ID << std::endl;
+
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(position, 0.0f));
 

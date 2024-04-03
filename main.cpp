@@ -2,17 +2,9 @@
 #include "BD_Curl.hpp"
 
 #include <iostream>
-#include "texture.h"
-//    ResourceManager resourceManager;
+//#include "BD_Texture.hpp"
 
 BlueDjinn blueDjinn(1920,1080);
-
-
-void BlueDjinn_GraphicCore_Render(){
-//    cout << "Renderizando" << endl;
-    std::cout << __FUNCTION__ << " " << __LINE__ << std::endl;
-}
-
 int main(){
 
     std::cout << __FUNCTION__ << " " << __LINE__ << std::endl;
@@ -22,8 +14,11 @@ int main(){
 //    verificarAPI("https://localhost:7013/api/LoginData/3");
 
     blueDjinn.Init();
+    blueDjinn.LoadAndGetShader("shaders/defaultVS.glsl", "shaders/defaultFS.glsl", nullptr, "sprite", "image");
+    blueDjinn.LoadAndGetShader("shaders/textVS.glsl", "shaders/textFS.glsl", nullptr, "text", "text");
 
-    blueDjinn.LoadAndGetShader("shaders/defaultVS.glsl", "shaders/defaultFS.glsl", nullptr, "sprite");
+//    blueDjinn.LoadShader("shaders/textVS.glsl", "shaders/textFS.glsl", nullptr, "text");
+//    blueDjinn.GetShader("shaders/textVS.glsl", "shaders/textFS.glsl", nullptr, "text");
     blueDjinn.LoadTexture("resources/textures/awesomeface.png", true, "sprite");
     blueDjinn.LoadTexture("resources/textures/impacta.png", true, "impacta");
     blueDjinn.LoadTexture("resources/textures/container.jpg", false, "container");
@@ -32,15 +27,12 @@ int main(){
     std::cout << __FUNCTION__ << " " << __LINE__ << std::endl;
 
 
-    std::cout << __FUNCTION__ << " " << __LINE__ << std::endl;
-
-
 
     while (!blueDjinn.isActive){
 
         blueDjinn.InitRender();
 
-        blueDjinn.DrawTexture("container", glm::vec2(800, 800), glm::vec2(400, 220), 0.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+//        blueDjinn.DrawTexture("container", glm::vec2(800, 800), glm::vec2(400, 220), 0.0f, glm::vec3(1.0f, 1.0f, 1.0f));
 
 ////        if(blueDjinn.GetKeyInput(GLFW_KEY_A)){
 //            blueDjinn.DrawTexture("sprite", glm::vec2(200, 200), glm::vec2(300, 400), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
@@ -56,6 +48,12 @@ int main(){
         blueDjinn.DrawSimpleTexture("container", 800, 800);
         blueDjinn.DrawSimpleTexture("sprite", 200, 200);
         blueDjinn.DrawSimpleTexture("impacta", 0, 0);
+
+//        Shader shader = ResourceManager::GetShader("text");
+
+//        std::cout << "ID DO SHADER " << shader.ID << std::endl;
+
+        blueDjinn.DrawText2D();
 
 
 

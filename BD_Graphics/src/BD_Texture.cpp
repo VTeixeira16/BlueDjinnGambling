@@ -8,7 +8,7 @@
 ******************************************************************/
 #include <iostream>
 
-#include "texture.h"
+#include "BD_Texture.hpp"
 
 
 Texture2D::Texture2D()

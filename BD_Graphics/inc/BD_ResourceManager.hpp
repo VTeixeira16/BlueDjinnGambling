@@ -5,9 +5,9 @@
 #include <map>
 //#include "stb_image.h"
 
-#include "texture.h"
-#include "BD_Shader.h"
-
+#include "BD_Texture.hpp"
+#include "BD_Shader.hpp"
+#include "BD_TextRenderer.hpp"
 
 class ResourceManager{
 public:
