@@ -5,6 +5,7 @@ using namespace std;
 
 SpriteRenderer  *Renderer;
 TextRenderer    *Text;
+std::vector<std::tuple<int, std::string, TextOrTexture>> RenderList;
 
 //GLFW Callbacks
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -150,34 +151,44 @@ int BlueDjinn::LoadText2D(string file, int size, string fontName){
 
 //    Text = new TextRenderer(ScreenWidth, ScreenHeight);
 //    Text->Load(file, size);
-}
-
-int BlueDjinn::DrawTexture(std::string textureName, glm::vec2 position, glm::vec2 size, float rotate, glm::vec3 color){
-
-    Texture2D myTexture;
-    myTexture = ResourceManager::GetTexture(textureName);
-    Renderer->DrawSprite(myTexture, position, size, rotate, color);
 
     return 0;
 }
 
-int BlueDjinn::DrawSimpleTexture(std::string textureName, int x, int y){
+int BlueDjinn::DrawTexture(std::string textureName, glm::vec3 position, glm::vec2 size, float rotate, glm::vec3 color){
+
+    Texture2D myTexture;
+    myTexture = ResourceManager::GetTexture(textureName);
+    //Renderer->DrawSprite(myTexture, position, size, rotate, color);
+    TextureRender textureRender(textureName, glm::vec2(position.x, position.y), size, rotate, color);
+    RenderList.push_back(std::make_tuple(position.z, "image", textureRender));
+
+    return 0;
+}
+
+int BlueDjinn::DrawSimpleTexture(std::string textureName, int x, int y, int z){
+
     Texture2D myTexture;
     myTexture = ResourceManager::GetTexture(textureName);
     glm::vec2 size = glm::vec2(myTexture.Width, myTexture.Height);
-    Renderer->DrawSprite(myTexture, glm::vec2(x,y), size, 0.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+    TextureRender textureRender(textureName, glm::vec2(x, y), glm::vec2(myTexture.Width, myTexture.Height), 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+    RenderList.push_back(std::make_tuple(z, "image", textureRender));
 
     return 0;
 }
 
-int BlueDjinn::DrawText2D(std::string fontName, std::string text, float x, float y, float scale, glm::vec3 color){
-    Font2D myFont;
-    myFont = ResourceManager::GetFont(fontName);
+int BlueDjinn::DrawText2D(std::string fontName, std::string text, float x, float y, float z, float scale, glm::vec3 color){
+    //Font2D myFont;
+    //myFont = ResourceManager::GetFont(fontName);
 
-//    std::cout << "Size:[" << myFont.size << "]" <<std::endl;
-//    std::cout << "Function: " << __FUNCTION__ << " - Line: " << __LINE__ << " ID:[" << myFont.ID << "] Size:[" << myFont.size << "]." << std::endl;
+    //std::cout << "Size:[" << myFont.size << "]" <<std::endl;
+    //std::cout << "Function: " << __FUNCTION__ << " - Line: " << __LINE__ << " ID:[" << myFont.ID << "] Size:[" << myFont.size << "]." << std::endl;
 
-    Text->RenderText(myFont, text, x, y, scale, color);
+    //Text->RenderText(myFont, text, x, y, scale, color);
+
+    TextRender textRender(fontName, text, x, y, scale, color);
+
+    RenderList.push_back(std::make_tuple(z, "text", textRender));
 
     return 0;
 }
@@ -203,7 +214,48 @@ int BlueDjinn::InitRender()
     return 0;
 }
 
+int BlueDjinn::ProcessRenderList()
+{
+    auto compareZIndex = [](const auto& a, const auto& b) {
+        return std::get<0>(a) < std::get <0> (b);
+    };
+
+    std::sort(RenderList.begin(), RenderList.end(), compareZIndex);
+
+    while (!RenderList.empty()) {
+        auto item = RenderList.front();
+
+        std::cout << "NomeItem" << std::get<1>(item) << std::endl;
+
+        if (auto* texturePtr = std::get_if<TextRender>(&std::get<2>(item))) {
+
+            Font2D myFont;
+            myFont = ResourceManager::GetFont(texturePtr->fontName);
+
+            //std::cout << "Size:[" << myFont.size << "]" << std::endl;
+            //std::cout << "Function: " << __FUNCTION__ << " - Line: " << __LINE__ << " ID:[" << myFont.ID << "] Size:[" << myFont.size << "]." << std::endl;
+
+            Text->RenderText(myFont, texturePtr->text, texturePtr->x, texturePtr->y, texturePtr->scale, texturePtr->color);        
+        }
+        else if (auto* texturePtr = std::get_if<TextureRender>(&std::get<2>(item))) {
+
+            Texture2D myTexture;
+            myTexture = ResourceManager::GetTexture(texturePtr->textureName);
+
+            Renderer->DrawSprite(myTexture, glm::vec2(texturePtr->position.x, texturePtr->position.y), texturePtr->size, texturePtr->rotate, texturePtr->color);
+        }
+
+
+        RenderList.erase(RenderList.begin());
+    }
+
+
+    return 0;
+}
+
 int BlueDjinn::EndRender(){
+    ProcessRenderList();
+
     glfwSwapBuffers(window);
     glfwPollEvents();
 
@@ -214,7 +266,7 @@ int BlueDjinn::ProcessInput(int key){
 
 //    if (this->Keys[key] == true)
 //    {
-//        std::cout << "Key " << key << "foi pressionada." << std::endl;
+        std::cout << "Key " << key << "foi pressionada." << std::endl;
 
 //    }
 
@@ -254,7 +306,26 @@ void BlueDjinn::key_callback(GLFWwindow* window, int key, int scancode, int acti
         glfwSetWindowShouldClose(window, true);
     if (key >= 0 && key < 1024)
     {
-        std::cout << "Key:[" << key << std::endl;
+        std::cout << "Key " << key << "foi pressionada." << std::endl;
+        std::cout << "Key " << key << "foi pressionada." << std::endl;
+
+        std::cout << "Key " << key << "foi pressionada." << std::endl;
+
+        std::cout << "Key " << key << "foi pressionada." << std::endl;
+
+        std::cout << "Key " << key << "foi pressionada." << std::endl;
+
+        std::cout << "Key " << key << "foi pressionada." << std::endl;
+
+        std::cout << "Key " << key << "foi pressionada." << std::endl;
+
+        std::cout << "Key " << key << "foi pressionada." << std::endl;
+
+        std::cout << "Key " << key << "foi pressionada." << std::endl;
+
+        std::cout << "Key " << key << "foi pressionada." << std::endl;
+
+
     }
 
     if (action == GLFW_PRESS)

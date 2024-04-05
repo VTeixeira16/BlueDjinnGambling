@@ -17,8 +17,8 @@ int main(){
     blueDjinn.LoadAndGetShader("shaders/defaultVS.glsl", "shaders/defaultFS.glsl", nullptr, "sprite", "image");
     blueDjinn.LoadAndGetShader("shaders/textVS.glsl", "shaders/textFS.glsl", nullptr, "text", "text");
 
-//    blueDjinn.LoadShader("shaders/textVS.glsl", "shaders/textFS.glsl", nullptr, "text");
-//    blueDjinn.GetShader("shaders/textVS.glsl", "shaders/textFS.glsl", nullptr, "text");
+////    blueDjinn.LoadShader("shaders/textVS.glsl", "shaders/textFS.glsl", nullptr, "text");
+////    blueDjinn.GetShader("shaders/textVS.glsl", "shaders/textFS.glsl", nullptr, "text");
     blueDjinn.LoadTexture("resources/textures/awesomeface.png", true, "sprite");
     blueDjinn.LoadTexture("resources/textures/impacta.png", true, "impacta");
     blueDjinn.LoadTexture("resources/textures/container.jpg", false, "container");
@@ -40,7 +40,6 @@ int main(){
 //        blueDjinn.DrawTexture("container", glm::vec2(800, 800), glm::vec2(400, 220), 0.0f, glm::vec3(1.0f, 1.0f, 1.0f));
 
 ////        if(blueDjinn.GetKeyInput(GLFW_KEY_A)){
-//            blueDjinn.DrawTexture("sprite", glm::vec2(200, 200), glm::vec2(300, 400), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 ////        }
 ////        if(blueDjinn.GetKeyInput(GLFW_KEY_S)){
 //            blueDjinn.DrawTexture("impacta", glm::vec2(0, 0), glm::vec2(400, 125), 0.0f, glm::vec3(1.0f, 1.0f, 1.0f));
@@ -48,21 +47,29 @@ int main(){
 ////        if(blueDjinn.GetKeyInput(GLFW_KEY_D)){
 //            blueDjinn.DrawSimpleTexture("container", 405, 0);
 ////        }
+///
+///
 
 
-        blueDjinn.DrawSimpleTexture("container", 800, 800);
-        blueDjinn.DrawSimpleTexture("sprite", 200, 200);
-        blueDjinn.DrawSimpleTexture("impacta", 0, 0);
+//        blueDjinn.DrawText2D("fontA_32", "FonteB", 200, 400, 1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 
+        blueDjinn.DrawTexture("sprite", glm::vec3(200, 200, 0), glm::vec2(900, 900), 90.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+
+        blueDjinn.DrawSimpleTexture("container", 0, 0, 4);
+        blueDjinn.DrawSimpleTexture("sprite", 100, 100, 0);
+        blueDjinn.DrawSimpleTexture("impacta", 200, 200, 10);
+        blueDjinn.DrawSimpleTexture("container", 300, 300, 0);
 //        Shader shader = ResourceManager::GetShader("text");
 
 //        std::cout << "ID DO SHADER " << shader.ID << std::endl;
 
 //        std::string fontName, std::string text, float x, float y, float scale, glm::vec3 color
 
-        blueDjinn.DrawText2D("fontA_64", "FonteA", 0, 0, 1.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-        blueDjinn.DrawText2D("fontA_32", "FonteB", 200, 400, 1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-        blueDjinn.DrawText2D("naoExiste", "FonteC", 0, 400, 1.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+        blueDjinn.DrawText2D("fontA_64", "FonteA", 200, 400, 20, 1.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+        blueDjinn.DrawText2D("fontA_32", "FonteB", 200, 400, 30, 1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+
+        blueDjinn.DrawText2D("fontA_64", "FonteA", 200, 600, 0, 1.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+        blueDjinn.DrawText2D("fontA_32", "FonteB", 200, 600, 2, 1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 
 
 
