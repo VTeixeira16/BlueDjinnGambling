@@ -8,34 +8,8 @@ Font2D::Font2D()
 
 void Font2D::Generate(std::string font, unsigned int fontSize)
 {
-//    this->Width = width;
-//    this->Height = height;
-//    // create Texture
-//    glBindTexture(GL_TEXTURE_2D, this->ID);
-//    glTexImage2D(GL_TEXTURE_2D, 0, this->Internal_Format, width, height, 0, this->Image_Format, GL_UNSIGNED_BYTE, data);
-//    // set Texture wrap and filter modes
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, this->Wrap_S);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, this->Wrap_T);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, this->Filter_Min);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, this->Filter_Max);
-//    // unbind texture
-//    glBindTexture(GL_TEXTURE_2D, 0);
 
-
-//    glGenVertexArrays(1, &this->VAO);
-//    glGenBuffers(1, &this->VBO);
-//    glBindVertexArray(this->VAO);
-//    glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
-//    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
-//    glEnableVertexAttribArray(0);
-//    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
-//    glBindBuffer(GL_ARRAY_BUFFER, 0);
-//    glBindVertexArray(0);
-
-
-    //    glBindTexture(GL_TEXTURE_2D, this->ID);
-
-    std::cout << "Function: " << __FUNCTION__ << " - Line: " << __LINE__ << " font:[" << font << "] Size:[" << fontSize << "]." << std::endl;
+//    std::cout << "Function: " << __FUNCTION__ << " - Line: " << __LINE__ << " font:[" << font << "] Size:[" << fontSize << "]." << std::endl;
 
     this->size = fontSize;
 

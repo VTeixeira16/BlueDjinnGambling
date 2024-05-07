@@ -15,8 +15,11 @@
 #include <cmath>
 #include <vector>
 #include <unordered_map>
-#include <variant>
 #include <algorithm>
+
+#include <variant>
+using std::variant;
+using std::get;
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -45,7 +48,7 @@ struct TextRender{
         fontName(_fontName), text(_text), x(_x), y(_y), scale(_scale), color(_color) {}
 };
 
-using TextOrTexture = std::variant<TextureRender, TextRender>;
+using TextOrTexture = variant<TextureRender, TextRender>;
 
 class BlueDjinn{
 
@@ -66,9 +69,10 @@ public:
     int LoadShader(const char *vShaderFile, const char *fShaderFile, const char *gShaderFile, std::string name);
     int GetShader(std::string name, std::string type);
     int LoadTexture(std::string file, bool alpha, std::string textureName);
-    int LoadText2D(std::string file, int size, std::string fontName);
+    int LoadFont(std::string file, int size, std::string fontName);
     int DrawTexture(std::string textureName, glm::vec3 position, glm::vec2 size, float rotate, glm::vec3 color);
     int DrawSimpleTexture(std::string textureName, int x, int y, int z);
+    int DrawAnimationTexture(std::string textureName, int x, int y, int z);
     int DrawText2D(std::string fontName, std::string text, float x, float y, float z, float scale, glm::vec3 color);
     BlueDjinn(unsigned int width, unsigned int height);
     ~BlueDjinn(); //destructor

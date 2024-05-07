@@ -9,8 +9,8 @@ int main(){
 
     std::cout << __FUNCTION__ << " " << __LINE__ << std::endl;
 
-//    verificarAPI("https://localhost:7013/api/LoginData/1");
-//    verificarAPI("https://localhost:7013/api/LoginData/2");
+    //verificarAPI("https://localhost:7013/api/LoginData/1");
+//     verificarAPI("https://localhost:7013/api/LoginData/2");
 //    verificarAPI("https://localhost:7013/api/LoginData/3");
 
     blueDjinn.Init();
@@ -23,9 +23,9 @@ int main(){
     blueDjinn.LoadTexture("resources/textures/impacta.png", true, "impacta");
     blueDjinn.LoadTexture("resources/textures/container.jpg", false, "container");
 
-    blueDjinn.LoadText2D("resources/fonts/OCRAEXT.ttf", 64, "fontA_64");
+    blueDjinn.LoadFont("resources/fonts/OCRAEXT.ttf", 64, "fontA_64");
 
-    blueDjinn.LoadText2D("resources/fonts/Antonio-Bold.ttf", 32, "fontA_32");
+    blueDjinn.LoadFont("resources/fonts/Antonio-Bold.ttf", 32, "fontA_32");
 
 
     //Terá uma função na main para carregar as imagens
@@ -53,10 +53,13 @@ int main(){
 
 //        blueDjinn.DrawText2D("fontA_32", "FonteB", 200, 400, 1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 
-        blueDjinn.DrawTexture("sprite", glm::vec3(200, 200, 0), glm::vec2(900, 900), 90.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+
+        if(blueDjinn.GetKeyInput(GLFW_KEY_A)){
+            blueDjinn.DrawTexture("sprite", glm::vec3(200, 200, 70), glm::vec2(100, 100), 90.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+        }
 
         blueDjinn.DrawSimpleTexture("container", 0, 0, 4);
-        blueDjinn.DrawSimpleTexture("sprite", 100, 100, 0);
+        blueDjinn.DrawSimpleTexture("sprite", 100, 100, 50);
         blueDjinn.DrawSimpleTexture("impacta", 200, 200, 10);
         blueDjinn.DrawSimpleTexture("container", 300, 300, 0);
 //        Shader shader = ResourceManager::GetShader("text");
@@ -65,7 +68,7 @@ int main(){
 
 //        std::string fontName, std::string text, float x, float y, float scale, glm::vec3 color
 
-        blueDjinn.DrawText2D("fontA_64", "FonteA", 200, 400, 20, 1.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+        blueDjinn.DrawText2D("fontA_64", "FonteA", 200, 400, 90, 1.0f, glm::vec3(1.0f, 0.0f, 0.0f));
         blueDjinn.DrawText2D("fontA_32", "FonteB", 200, 400, 30, 1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 
         blueDjinn.DrawText2D("fontA_64", "FonteA", 200, 600, 0, 1.0f, glm::vec3(1.0f, 0.0f, 0.0f));
