@@ -9,7 +9,8 @@
 
 BlueDjinn blueDjinn(1920,1080);
 
-#define MACHINE_NAME "TCC_DESKTOP_WINDOWS_12"
+#define MACHINE_NAME        "TCC_DESKTOP_WINDOWS_12"
+#define MAX_NUMBERS         60
 
 enum GAME_STATE {
     ST_IDLE,
@@ -69,6 +70,59 @@ int LoadData() {
     return 0;
 }
 
+void criaSorteio(std::vector<unsigned int> &cardNumbers) {
+
+    std::vector<unsigned int> allNumbers(MAX_NUMBERS);
+
+    for (int i = 0; i < allNumbers.size(); i++) {
+        allNumbers[i] = i + 1;
+    }
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(0, MAX_NUMBERS - 1);
+    int random_index;
+
+    //Vou criar um while que vai verificar se allNumbers ainda tem elementos e abastecer os 15 ou 30 primeiros itens da lista (baseado em cardNumbers Size)
+    int count = 0;
+    while (!allNumbers.empty() && count < cardNumbers.size()) {
+        std::uniform_int_distribution<> dis(0, allNumbers.size() - 1);
+        random_index = dis(gen);
+
+        cardNumbers[count] = allNumbers[random_index];
+        allNumbers.erase(allNumbers.begin() + random_index);
+
+        count++;
+    }
+        std::sort(cardNumbers.begin(), cardNumbers.end());
+}
+
+int countMarked(std::vector<unsigned int>& cardNumbers, std::vector<unsigned int>& ballNumbers, std::vector<bool>& cardMarked) {
+    unsigned int marked = 0;
+    unsigned int count = 0;
+    std::cout << "size(cardNumbers):" << cardNumbers.size() << std::endl;
+    std::cout << "size(ballNumbers):" << ballNumbers.size() << std::endl;
+    
+    while (count < cardNumbers.size() && count < ballNumbers.size()) {
+
+        std::cout << "count:" << count << std::endl;
+
+        for (int i = 0; i < ballNumbers.size(); i++) {
+            if (cardNumbers[count] == ballNumbers[i]) {
+                cardMarked[count] = true;
+                marked++;
+                break;
+            }
+        }
+
+
+        count++;
+    }
+
+
+    return marked;
+}
+
 int main(){
 
     verificarAPI("https://localhost:7013/api/LoginData/1", CURL_GET, "");
@@ -78,10 +132,6 @@ int main(){
 
     LoadData();
     std::cout << __FUNCTION__ << " " << __LINE__ << std::endl;
-//    verificarAPI("https://localhost:7013/api/LoginData/1", CURL_GET, NULL);
-
-//    verificarAPI("https://localhost:7013/api/LoginData/3");
-
 
     //Card Position Data
     glm::vec2 cardPosition = glm::vec2(110, 110);
@@ -94,8 +144,9 @@ int main(){
 
     GAME_STATE gameState = ST_IDLE;
 
-    std::vector<unsigned int> cardNumbers = { 1,2,3,4,50,6,7,8,9,10,11,12,13,14,15 };
-    std::vector<unsigned int> ballSorted(60);
+    std::vector<unsigned int> ballSorted(30);
+
+    std::vector<unsigned int> cardNumbers(15);
     std::vector<bool> cardMarked(15);
     int countNumbers = 0;
 
@@ -104,12 +155,19 @@ int main(){
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis(1, 60);
 
+
+    criaSorteio(cardNumbers);
+    criaSorteio(ballSorted);
+
+
     //TODO - REMOVER
-    for (int i = 0; i < ballSorted.size(); i++) {
-        ballSorted[i] = dis(gen);
-    }
+    //for (int i = 0; i < ballSorted.size(); i++) {
+    //    ballSorted[i] = dis(gen);
+    //}
 
     //BD_Core_curl_get("https://localhost:7013/api/LoginData/1");
+
+
 
 
 
@@ -124,33 +182,19 @@ int main(){
             break;
         case ST_INIT_PLAY:
             countNumbers = 0;
-            for (int i = 0; i < cardNumbers.size(); i++) {
-                cardMarked[i] = false;
-                cardNumbers[i] = dis(gen);
 
-            }
-            for (int i = 0; i < ballSorted.size(); i++) {
-                ballSorted[i] = dis(gen);
-            }
-            std::sort(std::begin(cardNumbers), std::end(cardNumbers));
-            //TODO - Remover depois
-            std::sort(std::begin(ballSorted), std::end(ballSorted));
+            criaSorteio(cardNumbers);
+            criaSorteio(ballSorted);
+            //std::sort(std::begin(cardNumbers), std::end(cardNumbers));
+            ////TODO - Remover depois
+            //std::sort(std::begin(ballSorted), std::end(ballSorted));
             gameState = ST_PLAYING;
             break;
         case ST_PLAYING:
             //Verfica se número sorteado tem na cartela
-            for (int i = 0; i < ballSorted.size(); i++) {
-                for (int j = 0; j < cardNumbers.size(); j++) {
 
-                    if (ballSorted[i] == cardNumbers[j]) {
-                        std::string countText = "Valor do ballSorted[i]: " + std::to_string(ballSorted[i]) + " - Valor do cardNumbers[j]: " + std::to_string(cardNumbers[j]);
-                        std::cout << countText << std::endl;
-                        countNumbers++;
-                        cardMarked[j] = true;
-                        //break;
-                    }
-                }
-            }
+            countNumbers = countMarked(cardNumbers, ballSorted, cardMarked);
+
             gameState = ST_ENDGAME;
             break;
         case ST_ENDGAME:
